@@ -1,5 +1,5 @@
 # quadTree
-Um projeto usando de detecção de colisão em 2d usando QuadTree
+Um projeto de detecção de colisão em 2d usando QuadTree
 
 # Novidade
 Foram adicionados controles para manipular o projeto pelo browser
