@@ -1,13 +1,3 @@
-// Daniel Shiffman
-// http://codingtra.in
-// http://patreon.com/codingtrain
-
-// QuadTree
-// https://www.youtube.com/watch?v=z0YFFg_nBjw
-
-// For more:
-// https://github.com/CodingTrain/QuadTree
-
 class Particle {
     constructor(x, y) {
       this.x = x;

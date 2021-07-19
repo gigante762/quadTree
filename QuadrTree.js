@@ -19,19 +19,19 @@ class Rectangle{
     contains(point)
     {
         return (
-            point.x >= this.x - this.w &&
+            point.x >= this.x &&
             point.x <= this.x + this.w &&
-            point.y >= this.y - this.h &&
+            point.y >= this.y &&
             point.y <= this.y + this.h
             );
     }
 
     intersects(range)
     {
-        return !(range.x-range.w > this.x+this.w ||
-         range.x + range.w < this.x-this.w||
-         range.y-range.h > this.y+this.h ||
-         range.y + range.h < this.h - this.w
+        return !(range.x > this.x+this.w ||
+         range.x + range.w < this.x||
+         range.y > this.y+this.h ||
+         range.y + range.h < this.h
          );
     }
 }
@@ -79,10 +79,10 @@ class QuadTree{
             this.subdivide();
         }
 
-        return (this.northeast.insert(point) ||
-        this.nortwest.insert(point) ||
-        this.southeast.insert(point) ||
-        this.southwest.insert(point));
+        return (this.tr.insert(point) ||
+        this.tl.insert(point) ||
+        this.br.insert(point) ||
+        this.bl.insert(point));
             
         
     }
@@ -95,15 +95,15 @@ class QuadTree{
         let w = this.boundary.w;
         let h = this.boundary.h;
 
-        let ne = new Rectangle(x+w/2, y-h/2,w/2, h/2);
-        let nw = new Rectangle(x-w/2, y-h/2,w/2, h/2);
-        let se = new Rectangle(x+w/2, y+h/2,w/2, h/2);
-        let sw = new Rectangle(x-w/2, y+h/2,w/2, h/2);
+        let tr = new Rectangle(x+w/2, y, w/2, h/2); // top left
+        let tl = new Rectangle(x, y, w/2, h/2);// top right
+        let br = new Rectangle(x+w/2, y+h/2,w/2, h/2);// bottom right
+        let bl = new Rectangle(x, y+h/2,w/2, h/2);// bottom left
 
-        this.northeast = new QuadTree(ne,this.capacity);
-        this.nortwest = new QuadTree(nw,this.capacity);
-        this.southeast = new QuadTree(se,this.capacity);
-        this.southwest = new QuadTree(sw,this.capacity);
+        this.tr = new QuadTree(tr,this.capacity);
+        this.tl = new QuadTree(tl,this.capacity);
+        this.br = new QuadTree(br,this.capacity);
+        this.bl = new QuadTree(bl,this.capacity);
 
         this.divided = true;
     }
@@ -113,14 +113,13 @@ class QuadTree{
         stroke(255);
         strokeWeight(1);
         noFill();
-        rectMode(CENTER);
-        rect(this.boundary.x,this.boundary.y, this.boundary.w*2,this.boundary.h*2);
+        rect(this.boundary.x,this.boundary.y, this.boundary.w, this.boundary.h);
         if (this.divided)
         {
-            this.northeast.show();
-            this.nortwest.show();
-            this.southeast.show();
-            this.southwest.show();
+            this.tr.show();
+            this.tl.show();
+            this.br.show();
+            this.bl.show();
         }
         
         strokeWeight(4);
@@ -155,10 +154,10 @@ class QuadTree{
         
         if (this.divided)
         {
-            this.northeast.query(range,found);
-            this.nortwest.query(range,found);
-            this.southeast.query(range,found);
-            this.southwest.query(range,found);
+            this.tr.query(range,found);
+            this.tl.query(range,found);
+            this.br.query(range,found);
+            this.bl.query(range,found);
         }
 
         return found;
